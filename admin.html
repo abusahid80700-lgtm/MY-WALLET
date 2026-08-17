@@ -1,45 +1,151 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Wallet - Admin</title>
-
-<style>
+<title>My Wallet — Admin</title><style>
 *{box-sizing:border-box}
 
+:root{
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --text:#111827;
+    --muted:#6b7280;
+    --border:#e5e7eb;
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+    --green:#16a34a;
+    --red:#dc2626;
+    --yellow:#d97706;
+    --shadow:0 10px 30px rgba(15,23,42,.07);
+}
+
 body{
-    font-family:Arial,sans-serif;
-    background:#f4f6f8;
     margin:0;
-    padding:20px;
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
 }
 
 .container{
-    max-width:1100px;
+    width:min(1200px,calc(100% - 30px));
     margin:auto;
+    padding:25px 0 50px;
 }
 
+/* TOPBAR */
+
 .topbar{
+    background:linear-gradient(135deg,#111827,#2563eb);
+    color:white;
+    padding:22px 25px;
+    border-radius:20px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:20px;
-    gap:10px;
+    gap:15px;
+    margin-bottom:22px;
+    box-shadow:var(--shadow);
 }
 
-h1,h2{color:#172033}
+.brand{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.logo{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    background:rgba(255,255,255,.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.brand h1{
+    margin:0;
+    font-size:24px;
+}
+
+.brand p{
+    margin:4px 0 0;
+    opacity:.8;
+    font-size:13px;
+}
+
+.logout{
+    background:#fff;
+    color:#111827;
+    border:0;
+    padding:11px 17px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-bottom:22px;
+}
+
+.stat{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:17px;
+    padding:20px;
+    box-shadow:var(--shadow);
+}
+
+.stat-title{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.stat-value{
+    font-size:25px;
+    font-weight:800;
+}
+
+/* CARD */
 
 .card{
-    background:#fff;
-    padding:20px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:22px;
     margin-bottom:20px;
-    border-radius:16px;
-    box-shadow:0 5px 20px rgba(15,23,42,.06);
-    overflow-x:auto;
+    box-shadow:var(--shadow);
 }
 
-.add-money-box{
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.card-header h2{
+    margin:0;
+    font-size:19px;
+}
+
+.card-header p{
+    color:var(--muted);
+    margin:5px 0 0;
+    font-size:13px;
+}
+
+/* ADD MONEY */
+
+.add-box{
     display:grid;
     grid-template-columns:1fr 180px 150px;
     gap:10px;
@@ -47,61 +153,109 @@ h1,h2{color:#172033}
 
 input{
     width:100%;
-    padding:13px;
-    border:1px solid #dfe3e8;
-    border-radius:10px;
-    font-size:15px;
+    padding:13px 14px;
+    border:1px solid var(--border);
+    border-radius:11px;
+    font-size:14px;
     outline:none;
+    background:#fafafa;
 }
+
+input:focus{
+    border-color:var(--primary);
+    background:white;
+}
+
+/* BUTTONS */
 
 button{
-    padding:13px 16px;
     border:0;
     border-radius:10px;
+    padding:11px 15px;
+    font-size:13px;
+    font-weight:700;
     cursor:pointer;
-    font-size:14px;
-    font-weight:600;
+    transition:.2s;
 }
 
-.primary{background:#111827;color:white}
-.secondary{background:#e5e7eb;color:#111827}
-.success-btn{background:#dcfce7;color:#166534}
-.danger{background:#fee2e2;color:#991b1b}
+button:hover{
+    transform:translateY(-1px);
+}
+
+.primary{
+    background:var(--primary);
+    color:white;
+}
+
+.primary:hover{
+    background:var(--primary-dark);
+}
+
+.secondary{
+    background:#eef2ff;
+    color:#3730a3;
+}
+
+.success-btn{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.danger{
+    background:#fee2e2;
+    color:#991b1b;
+}
 
 button:disabled{
     opacity:.6;
     cursor:not-allowed;
+    transform:none;
+}
+
+/* TABLE */
+
+.table-wrap{
+    overflow-x:auto;
+    margin-top:15px;
 }
 
 table{
     width:100%;
+    min-width:720px;
     border-collapse:collapse;
-    min-width:700px;
+}
+
+th{
+    background:#f8fafc;
+    color:#64748b;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
 }
 
 th,td{
-    padding:12px;
-    border-bottom:1px solid #e5e7eb;
+    padding:14px 12px;
+    border-bottom:1px solid var(--border);
     text-align:left;
+    font-size:13px;
 }
 
-th{background:#f3f4f6}
-
-.status{
-    margin:10px 0;
-    font-size:14px;
-    min-height:20px;
+td{
+    color:#374151;
 }
 
-.success{color:#15803d}
-.error{color:#b91c1c}
+tr:hover td{
+    background:#fafafa;
+}
+
+/* BADGE */
 
 .badge{
-    display:inline-block;
+    display:inline-flex;
     padding:5px 10px;
     border-radius:20px;
-    font-size:12px;
-    font-weight:bold;
+    font-size:11px;
+    font-weight:800;
 }
 
 .pending{
@@ -127,234 +281,330 @@ th{background:#f3f4f6}
 
 .empty{
     text-align:center;
+    color:#94a3b8;
     padding:25px;
-    color:#777;
 }
 
-@media(max-width:700px){
-    .add-money-box{
+/* STATUS */
+
+.status{
+    min-height:20px;
+    margin-top:12px;
+    font-size:13px;
+}
+
+.success{
+    color:var(--green);
+}
+
+.error{
+    color:var(--red);
+}
+
+/* SECTION ICON */
+
+.section-icon{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    background:#eff6ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+}
+
+.title-area{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .add-box{
         grid-template-columns:1fr;
     }
 
     .topbar{
+        align-items:flex-start;
         flex-direction:column;
-        align-items:stretch;
     }
+
+    .logout{
+        width:100%;
+    }
+
 }
-</style>
-</head>
 
-<body>
+@media(max-width:500px){
 
-<div class="container">
+    .container{
+        width:min(100% - 18px,1200px);
+        padding-top:10px;
+    }
 
-<div class="topbar">
-    <h1>Admin Panel</h1>
+    .card{
+        padding:16px;
+        border-radius:15px;
+    }
 
-    <button id="logoutBtn" class="danger">
-        Logout
-    </button>
+    .topbar{
+        padding:18px;
+        border-radius:16px;
+    }
+
+    .brand h1{
+        font-size:20px;
+    }
+
+}
+</style></head><body><div class="container"><!-- TOPBAR --><div class="topbar"><div class="brand">
+
+    <div class="logo">💳</div>
+
+    <div>
+        <h1>My Wallet</h1>
+        <p>Administrator Dashboard</p>
+    </div>
+
 </div>
 
-
-<!-- ========================= -->
-<!-- ADD MONEY -->
-<!-- ========================= -->
-
-<div class="card">
-
-<h2>Add Money</h2>
-
-<p>
-Add demo balance using the user's mobile number.
-</p>
-
-<div class="add-money-box">
-
-<input
-    id="addMobile"
-    type="tel"
-    inputmode="numeric"
-    maxlength="10"
-    placeholder="Mobile number"
->
-
-<input
-    id="addAmount"
-    type="number"
-    min="0.01"
-    step="0.01"
-    placeholder="Amount"
->
-
-<button
-    id="addMoneyBtn"
-    class="primary"
->
-Add Money
+<button id="logoutBtn" class="logout">
+    Logout
 </button>
+
+</div><!-- STATS --><div class="stats"><div class="stat">
+    <div class="stat-title">Total Users</div>
+    <div class="stat-value" id="totalUsers">—</div>
+</div>
+
+<div class="stat">
+    <div class="stat-title">Pending Withdrawals</div>
+    <div class="stat-value" id="pendingWithdrawals">—</div>
+</div>
+
+<div class="stat">
+    <div class="stat-title">Total Balance</div>
+    <div class="stat-value" id="totalBalance">₹0.00</div>
+</div>
+
+</div><!-- ADD MONEY --><div class="card"><div class="card-header">
+
+    <div class="title-area">
+
+        <div class="section-icon">💰</div>
+
+        <div>
+            <h2>Add Money</h2>
+            <p>Add demo balance to a registered user.</p>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="add-box">
+
+    <input
+        id="addMobile"
+        type="tel"
+        inputmode="numeric"
+        maxlength="10"
+        placeholder="User mobile number"
+    >
+
+    <input
+        id="addAmount"
+        type="number"
+        min="0.01"
+        step="0.01"
+        placeholder="Amount ₹"
+    >
+
+    <button
+        id="addMoneyBtn"
+        class="primary"
+    >
+        Add Money
+    </button>
 
 </div>
 
 <div id="addMoneyStatus" class="status"></div>
 
-</div>
+</div><!-- WITHDRAWALS --><div class="card"><div class="card-header">
 
+    <div class="title-area">
 
-<!-- ========================= -->
-<!-- WITHDRAWAL REQUESTS -->
-<!-- ========================= -->
+        <div class="section-icon">💸</div>
 
-<div class="card">
+        <div>
+            <h2>Withdrawal Requests</h2>
+            <p>Review and manage user withdrawal requests.</p>
+        </div>
 
-<h2>Withdrawal Requests</h2>
+    </div>
 
-<p>
-User withdrawal requests will appear here.
-</p>
-
-<button
-    id="refreshWithdrawalsBtn"
-    class="secondary"
->
-Refresh Requests
-</button>
-
-<div
-    id="withdrawalStatus"
-    class="status"
-></div>
-
-<table>
-
-<thead>
-
-<tr>
-    <th>ID</th>
-    <th>User</th>
-    <th>Mobile</th>
-    <th>UPI ID</th>
-    <th>Amount</th>
-    <th>Status</th>
-    <th>Date</th>
-    <th>Action</th>
-</tr>
-
-</thead>
-
-<tbody id="withdrawalsTable">
-
-<tr>
-    <td colspan="8">
-        Loading...
-    </td>
-</tr>
-
-</tbody>
-
-</table>
+    <button
+        id="refreshWithdrawalsBtn"
+        class="secondary"
+    >
+        Refresh
+    </button>
 
 </div>
 
+<div id="withdrawalStatus" class="status"></div>
 
-<!-- ========================= -->
-<!-- USERS -->
-<!-- ========================= -->
+<div class="table-wrap">
 
-<div class="card">
+    <table>
 
-<h2>Users</h2>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Mobile</th>
+                <th>UPI ID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
 
-<button
-    id="refreshBtn"
-    class="secondary"
->
-Refresh Users
-</button>
+        <tbody id="withdrawalsTable">
+
+            <tr>
+                <td colspan="8">
+                    Loading...
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</div><!-- USERS --><div class="card"><div class="card-header">
+
+    <div class="title-area">
+
+        <div class="section-icon">👥</div>
+
+        <div>
+            <h2>Users</h2>
+            <p>Registered wallet users and their balances.</p>
+        </div>
+
+    </div>
+
+    <button
+        id="refreshBtn"
+        class="secondary"
+    >
+        Refresh
+    </button>
+
+</div>
 
 <div id="userStatus" class="status"></div>
 
-<table>
+<div class="table-wrap">
 
-<thead>
+    <table>
 
-<tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Mobile</th>
-    <th>Balance</th>
-</tr>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
 
-</thead>
+        <tbody id="usersTable">
 
-<tbody id="usersTable">
+            <tr>
+                <td colspan="4">
+                    Loading...
+                </td>
+            </tr>
 
-<tr>
-    <td colspan="4">
-        Loading...
-    </td>
-</tr>
+        </tbody>
 
-</tbody>
-
-</table>
+    </table>
 
 </div>
 
+</div><!-- TRANSACTIONS --><div class="card"><div class="card-header">
 
-<!-- ========================= -->
-<!-- TRANSACTIONS -->
-<!-- ========================= -->
+    <div class="title-area">
 
-<div class="card">
+        <div class="section-icon">📊</div>
 
-<h2>Transaction History</h2>
+        <div>
+            <h2>Transaction History</h2>
+            <p>View wallet transaction records.</p>
+        </div>
 
-<button
-    id="loadTransactionsBtn"
-    class="secondary"
->
-Load Transactions
-</button>
+    </div>
+
+    <button
+        id="loadTransactionsBtn"
+        class="secondary"
+    >
+        Load
+    </button>
+
+</div>
 
 <div id="transactionStatus" class="status"></div>
 
-<table>
+<div class="table-wrap">
 
-<thead>
+    <table>
 
-<tr>
-    <th>ID</th>
-    <th>User ID</th>
-    <th>Type</th>
-    <th>Amount</th>
-    <th>Date</th>
-</tr>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+        </thead>
 
-</thead>
+        <tbody id="transactionsTable">
 
-<tbody id="transactionsTable">
+            <tr>
+                <td colspan="5">
+                    No transactions loaded.
+                </td>
+            </tr>
 
-<tr>
-    <td colspan="5">
-        No transactions loaded.
-    </td>
-</tr>
+        </tbody>
 
-</tbody>
-
-</table>
-
-</div>
+    </table>
 
 </div>
 
+</div></div><script>
 
-<script>
+/* =========================
+   ADMIN SESSION
+========================= */
 
 const adminToken =
     sessionStorage.getItem("adminToken");
-
 
 if(!adminToken){
 
@@ -363,6 +613,10 @@ if(!adminToken){
 
 }
 
+
+/* =========================
+   AUTH HEADERS
+========================= */
 
 function authHeaders(){
 
@@ -391,9 +645,7 @@ async function loadUsers(){
 
     table.innerHTML = `
         <tr>
-            <td colspan="4">
-                Loading...
-            </td>
+            <td colspan="4">Loading...</td>
         </tr>
     `;
 
@@ -436,11 +688,13 @@ async function loadUsers(){
 
             table.innerHTML = `
                 <tr>
-                    <td colspan="4">
+                    <td colspan="4" class="empty">
                         No users found.
                     </td>
                 </tr>
             `;
+
+            updateStats([]);
 
             return;
         }
@@ -452,21 +706,22 @@ async function loadUsers(){
 
             row.innerHTML = `
                 <td>${escapeHtml(user.id)}</td>
-
                 <td>${escapeHtml(user.name)}</td>
-
                 <td>${escapeHtml(user.mobile)}</td>
-
                 <td>
-                    ₹${Number(
-                        user.balance || 0
-                    ).toFixed(2)}
+                    <strong>
+                        ₹${Number(
+                            user.balance || 0
+                        ).toFixed(2)}
+                    </strong>
                 </td>
             `;
 
             table.appendChild(row);
 
         });
+
+        updateStats(users);
 
     }catch(error){
 
@@ -492,22 +747,56 @@ async function loadUsers(){
 
 
 /* =========================
+   STATS
+========================= */
+
+function updateStats(users){
+
+    const totalUsers =
+        Array.isArray(users)
+            ? users.length
+            : 0;
+
+    const totalBalance =
+        Array.isArray(users)
+            ? users.reduce(
+                (sum,user) =>
+                    sum +
+                    Number(user.balance || 0),
+                0
+            )
+            : 0;
+
+    document.getElementById(
+        "totalUsers"
+    ).textContent =
+        totalUsers;
+
+    document.getElementById(
+        "totalBalance"
+    ).textContent =
+        "₹" +
+        totalBalance.toFixed(2);
+
+}
+
+
+/* =========================
    ADD MONEY
 ========================= */
 
 async function addMoney(){
 
     const mobile =
-        document
-            .getElementById("addMobile")
-            .value
-            .trim();
+        document.getElementById(
+            "addMobile"
+        ).value.trim();
 
     const amount =
         Number(
-            document
-                .getElementById("addAmount")
-                .value
+            document.getElementById(
+                "addAmount"
+            ).value
         );
 
     const status =
@@ -548,9 +837,7 @@ async function addMoney(){
     }
 
     button.disabled = true;
-
-    button.textContent =
-        "Adding...";
+    button.textContent = "Adding...";
 
     try{
 
@@ -559,37 +846,16 @@ async function addMoney(){
                 "/api/demo/add-balance",
                 {
                     method:"POST",
-
                     headers:
                         authHeaders(),
 
                     body:
                         JSON.stringify({
-                            mobile:mobile,
-                            amount:amount
+                            mobile,
+                            amount
                         })
                 }
             );
-
-            const contentType =
-    response.headers.get("content-type") || "";
-
-if (!contentType.includes("application/json")) {
-
-    const text =
-        await response.text();
-
-    throw new Error(
-        "Server returned HTML instead of JSON. Status: " +
-        response.status +
-        "\n" +
-        text.substring(0, 200)
-    );
-
-}
-
-        const data =
-            await response.json();
 
         if(response.status === 401){
 
@@ -598,21 +864,23 @@ if (!contentType.includes("application/json")) {
 
         }
 
+        const data =
+            await response.json();
+
         if(!response.ok){
 
-            status.textContent =
+            throw new Error(
                 data.message ||
-                "Could not add money.";
+                "Could not add money."
+            );
 
-            status.className =
-                "status error";
-
-            return;
         }
 
         status.textContent =
             "Money added successfully. New balance: ₹" +
-            Number(data.balance).toFixed(2);
+            Number(
+                data.balance
+            ).toFixed(2);
 
         status.className =
             "status success";
@@ -622,7 +890,6 @@ if (!contentType.includes("application/json")) {
         ).value = "";
 
         await loadUsers();
-
         await loadAllTransactions();
 
     }catch(error){
@@ -630,6 +897,7 @@ if (!contentType.includes("application/json")) {
         console.error(error);
 
         status.textContent =
+            error.message ||
             "Server connection failed.";
 
         status.className =
@@ -638,9 +906,7 @@ if (!contentType.includes("application/json")) {
     }finally{
 
         button.disabled = false;
-
-        button.textContent =
-            "Add Money";
+        button.textContent = "Add Money";
 
     }
 
@@ -648,7 +914,7 @@ if (!contentType.includes("application/json")) {
 
 
 /* =========================
-   WITHDRAWAL REQUESTS
+   WITHDRAWALS
 ========================= */
 
 async function loadWithdrawals(){
@@ -665,9 +931,7 @@ async function loadWithdrawals(){
 
     table.innerHTML = `
         <tr>
-            <td colspan="8">
-                Loading...
-            </td>
+            <td colspan="8">Loading...</td>
         </tr>
     `;
 
@@ -696,7 +960,7 @@ async function loadWithdrawals(){
 
             throw new Error(
                 data.message ||
-                "Failed to load withdrawal requests."
+                "Failed to load withdrawals."
             );
 
         }
@@ -707,6 +971,8 @@ async function loadWithdrawals(){
                 : data.withdrawals;
 
         table.innerHTML = "";
+
+        let pending = 0;
 
         if(
             !Array.isArray(requests) ||
@@ -721,34 +987,35 @@ async function loadWithdrawals(){
                 </tr>
             `;
 
-            status.textContent =
-                "No withdrawal requests.";
-
-            status.className =
-                "status";
+            document.getElementById(
+                "pendingWithdrawals"
+            ).textContent = "0";
 
             return;
-
         }
 
         requests.forEach(function(item){
-
-            const row =
-                document.createElement("tr");
 
             const statusText =
                 String(
                     item.status || "Pending"
                 );
 
-            const statusClass =
-                statusText.toLowerCase();
+            if(
+                statusText.toLowerCase()
+                === "pending"
+            ){
+                pending++;
+            }
+
+            const row =
+                document.createElement("tr");
 
             let actionHtml = "";
 
             if(
-                statusText.toLowerCase() ===
-                "pending"
+                statusText.toLowerCase()
+                === "pending"
             ){
 
                 actionHtml = `
@@ -779,8 +1046,7 @@ async function loadWithdrawals(){
 
             }else{
 
-                actionHtml =
-                    "Completed";
+                actionHtml = "Completed";
 
             }
 
@@ -791,34 +1057,30 @@ async function loadWithdrawals(){
                 </td>
 
                 <td>
-                    ${escapeHtml(
-                        item.name || ""
-                    )}
+                    ${escapeHtml(item.name || "")}
                 </td>
 
                 <td>
-                    ${escapeHtml(
-                        item.mobile || ""
-                    )}
+                    ${escapeHtml(item.mobile || "")}
                 </td>
 
                 <td>
-                    ${escapeHtml(
-                        item.upi_id || ""
-                    )}
+                    ${escapeHtml(item.upi_id || "")}
                 </td>
 
                 <td>
-                    ₹${Number(
-                        item.amount || 0
-                    ).toFixed(2)}
+                    <strong>
+                        ₹${Number(
+                            item.amount || 0
+                        ).toFixed(2)}
+                    </strong>
                 </td>
 
                 <td>
                     <span
-                        class="badge ${escapeHtml(
-                            statusClass
-                        )}"
+                        class="badge ${
+                            statusText.toLowerCase()
+                        }"
                     >
                         ${escapeHtml(
                             statusText
@@ -835,11 +1097,16 @@ async function loadWithdrawals(){
                 <td>
                     ${actionHtml}
                 </td>
+
             `;
 
             table.appendChild(row);
 
         });
+
+        document.getElementById(
+            "pendingWithdrawals"
+        ).textContent = pending;
 
         status.textContent =
             "Withdrawal requests loaded.";
@@ -860,8 +1127,7 @@ async function loadWithdrawals(){
         `;
 
         status.textContent =
-            error.message ||
-            "Failed to load withdrawal requests.";
+            error.message;
 
         status.className =
             "status error";
@@ -898,7 +1164,9 @@ async function updateWithdrawal(
         const response =
             await fetch(
                 "/api/admin/withdrawals/" +
-                encodeURIComponent(requestId),
+                encodeURIComponent(
+                    requestId
+                ),
                 {
                     method:"POST",
 
@@ -931,7 +1199,6 @@ async function updateWithdrawal(
             );
 
             return;
-
         }
 
         alert(
@@ -941,9 +1208,7 @@ async function updateWithdrawal(
         );
 
         await loadWithdrawals();
-
         await loadUsers();
-
         await loadAllTransactions();
 
     }catch(error){
@@ -977,9 +1242,7 @@ async function loadAllTransactions(){
 
     table.innerHTML = `
         <tr>
-            <td colspan="5">
-                Loading...
-            </td>
+            <td colspan="5">Loading...</td>
         </tr>
     `;
 
@@ -1068,9 +1331,11 @@ async function loadAllTransactions(){
                         </td>
 
                         <td>
-                            ₹${Number(
-                                tx.amount || 0
-                            ).toFixed(2)}
+                            <strong>
+                                ₹${Number(
+                                    tx.amount || 0
+                                ).toFixed(2)}
+                            </strong>
                         </td>
 
                         <td>
@@ -1092,7 +1357,7 @@ async function loadAllTransactions(){
 
             table.innerHTML = `
                 <tr>
-                    <td colspan="5">
+                    <td colspan="5" class="empty">
                         No transactions found.
                     </td>
                 </tr>
@@ -1127,8 +1392,7 @@ async function loadAllTransactions(){
         `;
 
         status.textContent =
-            error.message ||
-            "Failed to load transactions.";
+            error.message;
 
         status.className =
             "status error";
@@ -1193,26 +1457,11 @@ function logoutLocal(){
 function escapeHtml(value){
 
     return String(value ?? "")
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
 
 }
 
@@ -1222,49 +1471,35 @@ function escapeHtml(value){
 ========================= */
 
 document
-    .getElementById(
-        "addMoneyBtn"
-    )
+    .getElementById("addMoneyBtn")
     .addEventListener(
         "click",
         addMoney
     );
 
-
 document
-    .getElementById(
-        "refreshBtn"
-    )
+    .getElementById("refreshBtn")
     .addEventListener(
         "click",
         loadUsers
     );
 
-
 document
-    .getElementById(
-        "loadTransactionsBtn"
-    )
+    .getElementById("loadTransactionsBtn")
     .addEventListener(
         "click",
         loadAllTransactions
     );
 
-
 document
-    .getElementById(
-        "refreshWithdrawalsBtn"
-    )
+    .getElementById("refreshWithdrawalsBtn")
     .addEventListener(
         "click",
         loadWithdrawals
     );
 
-
 document
-    .getElementById(
-        "logoutBtn"
-    )
+    .getElementById("logoutBtn")
     .addEventListener(
         "click",
         logout
@@ -1276,10 +1511,7 @@ document
 ========================= */
 
 loadUsers();
-
 loadWithdrawals();
 
-</script>
-
-</body> 
+</script></body>
 </html>
