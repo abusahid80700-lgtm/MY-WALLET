@@ -1,0 +1,864 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    color: #172033;
+    padding: 20px;
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(circle at 15% 20%, rgba(79, 70, 229, .18), transparent 30%),
+        radial-gradient(circle at 85% 75%, rgba(37, 99, 235, .15), transparent 32%),
+        linear-gradient(135deg, #eef2ff, #f8fafc, #eef2ff);
+
+    background-size: 180% 180%;
+    animation: backgroundMove 12s ease-in-out infinite;
+}
+
+@keyframes backgroundMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(2px);
+}
+
+body::before {
+    width: 220px;
+    height: 220px;
+    top: -80px;
+    left: -70px;
+    background: rgba(99, 102, 241, .13);
+    animation: floatingOne 8s ease-in-out infinite;
+}
+
+body::after {
+    width: 260px;
+    height: 260px;
+    right: -100px;
+    bottom: -90px;
+    background: rgba(37, 99, 235, .12);
+    animation: floatingTwo 10s ease-in-out infinite;
+}
+
+@keyframes floatingOne {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(35px, 45px);
+    }
+}
+
+@keyframes floatingTwo {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(-35px, -40px);
+    }
+}
+
+/* =========================
+   AUTH
+========================= */
+
+.auth-container {
+    width: 100%;
+    max-width: 430px;
+    margin: 40px auto;
+    animation: authAppear .7s ease;
+}
+
+@keyframes authAppear {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.brand {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.brand-icon {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 21px;
+
+    background:
+        linear-gradient(135deg, #111827, #4f46e5);
+
+    color: white;
+    font-size: 29px;
+    font-weight: 800;
+
+    box-shadow:
+        0 15px 35px rgba(37, 99, 235, .25);
+
+    animation: iconFloat 4s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-7px) rotate(1deg);
+    }
+}
+
+.brand h1 {
+    font-size: 30px;
+    margin-bottom: 7px;
+}
+
+.brand p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.auth-card {
+    position: relative;
+    background: rgba(255, 255, 255, .90);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    padding: 28px;
+
+    border-radius: 24px;
+
+    border: 1px solid rgba(255, 255, 255, .8);
+
+    box-shadow:
+        0 20px 55px rgba(15, 23, 42, .10);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.auth-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 25px 65px rgba(15, 23, 42, .13);
+}
+
+.auth-card h2 {
+    font-size: 23px;
+    margin-bottom: 7px;
+}
+
+.subtitle {
+    color: #7b8494;
+    font-size: 14px;
+    margin-bottom: 22px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input {
+    width: 100%;
+
+    min-height: 52px;
+
+    padding: 14px 15px;
+    margin-bottom: 13px;
+
+    border: 1px solid #e1e5eb;
+    border-radius: 13px;
+
+    background: rgba(255, 255, 255, .95);
+
+    font-size: 15px;
+    outline: none;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease;
+}
+
+input::placeholder {
+    color: #9ca3af;
+}
+
+input:focus {
+    border-color: #4f46e5;
+
+    box-shadow:
+        0 0 0 4px rgba(79, 70, 229, .10);
+
+    transform: translateY(-1px);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease,
+        box-shadow .2s ease;
+}
+
+button:hover {
+    opacity: .94;
+}
+
+button:active {
+    transform: scale(.97);
+}
+
+.primary-btn {
+    width: 100%;
+    min-height: 52px;
+
+    padding: 14px;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(135deg, #111827, #4f46e5);
+
+    color: white;
+    font-weight: 700;
+
+    box-shadow:
+        0 10px 25px rgba(79, 70, 229, .20);
+}
+
+.primary-btn:hover {
+    box-shadow:
+        0 14px 30px rgba(79, 70, 229, .28);
+
+    transform: translateY(-1px);
+}
+
+.secondary-btn {
+    width: 100%;
+    min-height: 52px;
+
+    padding: 14px;
+
+    border-radius: 13px;
+
+    background: #eef0f5;
+    color: #172033;
+
+    font-weight: 600;
+}
+
+.secondary-btn:hover {
+    background: #e5e7eb;
+}
+
+.link-btn {
+    display: block;
+
+    margin: 15px auto 0;
+
+    background: transparent;
+
+    color: #4f46e5;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.link-btn:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 22px 0;
+
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: #e5e7eb;
+}
+
+#message,
+#loginMessage,
+#forgotMessage,
+#withdrawMessage,
+#telegramMessage {
+    margin-top: 10px;
+    min-height: 20px;
+    font-size: 13px;
+}
+
+/* =========================
+   WALLET
+========================= */
+
+.wallet-container {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+
+    animation: walletAppear .5s ease;
+}
+
+@keyframes walletAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.wallet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+}
+
+.small-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #7b8494;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.wallet-header h1 {
+    font-size: 25px;
+}
+
+.menu-btn {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 14px;
+
+    background: white;
+
+    font-size: 27px;
+
+    box-shadow:
+        0 8px 22px rgba(15, 23, 42, .08);
+}
+
+/* =========================
+   MENU
+========================= */
+
+.menu-panel {
+    background: rgba(255, 255, 255, .95);
+
+    padding: 8px;
+    margin-bottom: 18px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 15px 35px rgba(15, 23, 42, .10);
+
+    animation: menuOpen .25s ease;
+}
+
+@keyframes menuOpen {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.menu-panel button {
+    width: 100%;
+
+    padding: 14px 15px;
+
+    text-align: left;
+
+    background: transparent;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.menu-panel button:hover {
+    background: #f1f5f9;
+}
+
+#logoutBtn {
+    color: #dc2626;
+}
+
+/* =========================
+   BALANCE
+========================= */
+
+.balance-card {
+    position: relative;
+    overflow: hidden;
+
+    padding: 27px;
+
+    border-radius: 23px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #111827,
+            #312e81,
+            #4f46e5
+        );
+
+    color: white;
+
+    box-shadow:
+        0 20px 40px rgba(37, 99, 235, .22);
+
+    background-size: 200% 200%;
+
+    animation: balanceGradient 8s ease infinite;
+}
+
+@keyframes balanceGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.balance-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    right: -90px;
+    top: -100px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.07);
+
+    animation: balanceCircle 6s ease-in-out infinite;
+}
+
+@keyframes balanceCircle {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+.balance-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 120px;
+    height: 120px;
+
+    left: -55px;
+    bottom: -65px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.05);
+}
+
+.balance-top {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: #d1d5db;
+    font-size: 14px;
+}
+
+.wallet-dot {
+    width: 11px;
+    height: 11px;
+
+    display: inline-block;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow:
+        0 0 0 5px rgba(34,197,94,.15),
+        0 0 15px rgba(34,197,94,.8);
+}
+
+.balance-card h2 {
+    position: relative;
+    z-index: 2;
+
+    font-size: 38px;
+
+    margin: 15px 0 7px;
+}
+
+.balance-label {
+    position: relative;
+    z-index: 2;
+
+    color: #cbd5e1;
+    font-size: 12px;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card {
+    background: rgba(255,255,255,.92);
+
+    padding: 22px 18px;
+
+    margin-top: 18px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(15,23,42,.07);
+}
+
+.card h2 {
+    margin: 0;
+    font-size: 21px;
+}
+
+.card p {
+    color: #64748b;
+    font-size: 14px;
+    margin-top: 7px;
+}
+
+/* =========================
+   TRANSACTIONS
+========================= */
+
+.dashboard-history {
+    margin-top: 22px;
+}
+
+.history-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 12px;
+}
+
+.history-heading h2 {
+    margin: 0;
+    font-size: 19px;
+}
+
+.history-heading span {
+    color: #64748b;
+    font-size: 12px;
+}
+
+#transactions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#transactions > div {
+    background: rgba(255,255,255,.92);
+
+    padding: 16px;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 6px 18px rgba(15,23,42,.05);
+
+    animation: transactionAppear .35s ease;
+}
+
+@keyframes transactionAppear {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.empty-transaction {
+    text-align: center;
+
+    padding: 30px 20px !important;
+
+    color: #64748b;
+}
+
+.empty-icon {
+    width: 48px;
+    height: 48px;
+
+    margin: 0 auto 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f1f3f5;
+
+    font-size: 22px;
+}
+
+/* =========================
+   WITHDRAWAL HISTORY
+========================= */
+
+#withdrawalStatusList {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+#withdrawalStatusList > div {
+    background: #f8fafc;
+
+    border: 1px solid #e5e7eb;
+
+    padding: 15px;
+
+    border-radius: 15px;
+}
+
+/* =========================
+   DEMO NOTE
+========================= */
+
+.demo-note {
+    text-align: center;
+
+    color: #9ca3af;
+
+    font-size: 11px;
+
+    margin-top: 22px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+
+    body {
+        padding: 14px;
+    }
+
+    .auth-container {
+        margin-top: 20px;
+    }
+
+    .auth-card {
+        padding: 22px;
+        border-radius: 21px;
+    }
+
+    .brand h1 {
+        font-size: 28px;
+    }
+
+    .wallet-header h1 {
+        font-size: 21px;
+    }
+
+    .balance-card {
+        padding: 23px;
+    }
+
+    .balance-card h2 {
+        font-size: 32px;
+    }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* LOGIN LOADING ANIMATION */
+
+#loginBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.login-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: loginSpin 0.7s linear infinite;
+}
+
+@keyframes loginSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* SUCCESSFUL LOGIN TRANSITION */
+
+.login-success .auth-container {
+    animation: loginOut 0.5s ease forwards;
+}
+
+@keyframes loginOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.96) translateY(-10px);
+    }
+}
+
+
+
+@keyframes walletIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Wallet entrance animation */
+.wallet-container.wallet-enter {
+    animation: walletIn 0.6s ease;
+}
+
+@keyframes walletIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

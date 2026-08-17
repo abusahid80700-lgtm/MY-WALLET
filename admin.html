@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Wallet - Admin</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f6f8;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    gap:10px;
+}
+
+h1,h2{color:#172033}
+
+.card{
+    background:#fff;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(15,23,42,.06);
+    overflow-x:auto;
+}
+
+.add-money-box{
+    display:grid;
+    grid-template-columns:1fr 180px 150px;
+    gap:10px;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #dfe3e8;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+}
+
+button{
+    padding:13px 16px;
+    border:0;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+}
+
+.primary{background:#111827;color:white}
+.secondary{background:#e5e7eb;color:#111827}
+.success-btn{background:#dcfce7;color:#166534}
+.danger{background:#fee2e2;color:#991b1b}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+}
+
+th,td{
+    padding:12px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+}
+
+th{background:#f3f4f6}
+
+.status{
+    margin:10px 0;
+    font-size:14px;
+    min-height:20px;
+}
+
+.success{color:#15803d}
+.error{color:#b91c1c}
+
+.badge{
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.approved{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.rejected{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.action-box{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.empty{
+    text-align:center;
+    padding:25px;
+    color:#777;
+}
+
+@media(max-width:700px){
+    .add-money-box{
+        grid-template-columns:1fr;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="topbar">
+    <h1>Admin Panel</h1>
+
+    <button id="logoutBtn" class="danger">
+        Logout
+    </button>
+</div>
+
+
+<!-- ========================= -->
+<!-- ADD MONEY -->
+<!-- ========================= -->
+
+<div class="card">
+
+<h2>Add Money</h2>
+
+<p>
+Add demo balance using the user's mobile number.
+</p>
+
+<div class="add-money-box">
+
+<input
+    id="addMobile"
+    type="tel"
+    inputmode="numeric"
+    maxlength="10"
+    placeholder="Mobile number"
+>
+
+<input
+    id="addAmount"
+    type="number"
+    min="0.01"
+    step="0.01"
+    placeholder="Amount"
+>
+
+<button
+    id="addMoneyBtn"
+    class="primary"
+>
+Add Money
+</button>
+
+</div>
+
+<div id="addMoneyStatus" class="status"></div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- WITHDRAWAL REQUESTS -->
+<!-- ========================= -->
+
+<div class="card">
+
+<h2>Withdrawal Requests</h2>
+
+<p>
+User withdrawal requests will appear here.
+</p>
+
+<button
+    id="refreshWithdrawalsBtn"
+    class="secondary"
+>
+Refresh Requests
+</button>
+
+<div
+    id="withdrawalStatus"
+    class="status"
+></div>
+
+<table>
+
+<thead>
+
+<tr>
+    <th>ID</th>
+    <th>User</th>
+    <th>Mobile</th>
+    <th>UPI ID</th>
+    <th>Amount</th>
+    <th>Status</th>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="withdrawalsTable">
+
+<tr>
+    <td colspan="8">
+        Loading...
+    </td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- USERS -->
+<!-- ========================= -->
+
+<div class="card">
+
+<h2>Users</h2>
+
+<button
+    id="refreshBtn"
+    class="secondary"
+>
+Refresh Users
+</button>
+
+<div id="userStatus" class="status"></div>
+
+<table>
+
+<thead>
+
+<tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Mobile</th>
+    <th>Balance</th>
+</tr>
+
+</thead>
+
+<tbody id="usersTable">
+
+<tr>
+    <td colspan="4">
+        Loading...
+    </td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- TRANSACTIONS -->
+<!-- ========================= -->
+
+<div class="card">
+
+<h2>Transaction History</h2>
+
+<button
+    id="loadTransactionsBtn"
+    class="secondary"
+>
+Load Transactions
+</button>
+
+<div id="transactionStatus" class="status"></div>
+
+<table>
+
+<thead>
+
+<tr>
+    <th>ID</th>
+    <th>User ID</th>
+    <th>Type</th>
+    <th>Amount</th>
+    <th>Date</th>
+</tr>
+
+</thead>
+
+<tbody id="transactionsTable">
+
+<tr>
+    <td colspan="5">
+        No transactions loaded.
+    </td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<script>
+
+const adminToken =
+    sessionStorage.getItem("adminToken");
+
+
+if(!adminToken){
+
+    window.location.href =
+        "/admin-login.html";
+
+}
+
+
+function authHeaders(){
+
+    return {
+        "Authorization":
+            "Bearer " + adminToken,
+
+        "Content-Type":
+            "application/json"
+    };
+
+}
+
+
+/* =========================
+   LOAD USERS
+========================= */
+
+async function loadUsers(){
+
+    const table =
+        document.getElementById("usersTable");
+
+    const status =
+        document.getElementById("userStatus");
+
+    table.innerHTML = `
+        <tr>
+            <td colspan="4">
+                Loading...
+            </td>
+        </tr>
+    `;
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/users",
+                {
+                    headers:
+                        authHeaders()
+                }
+            );
+
+        if(response.status === 401){
+
+            logoutLocal();
+            return;
+
+        }
+
+        const users =
+            await response.json();
+
+        if(!response.ok){
+
+            throw new Error(
+                users.message ||
+                "Failed to load users."
+            );
+
+        }
+
+        table.innerHTML = "";
+
+        if(
+            !Array.isArray(users) ||
+            users.length === 0
+        ){
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="4">
+                        No users found.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+        users.forEach(function(user){
+
+            const row =
+                document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${escapeHtml(user.id)}</td>
+
+                <td>${escapeHtml(user.name)}</td>
+
+                <td>${escapeHtml(user.mobile)}</td>
+
+                <td>
+                    ₹${Number(
+                        user.balance || 0
+                    ).toFixed(2)}
+                </td>
+            `;
+
+            table.appendChild(row);
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="4">
+                    Failed to load users.
+                </td>
+            </tr>
+        `;
+
+        status.textContent =
+            error.message;
+
+        status.className =
+            "status error";
+
+    }
+
+}
+
+
+/* =========================
+   ADD MONEY
+========================= */
+
+async function addMoney(){
+
+    const mobile =
+        document
+            .getElementById("addMobile")
+            .value
+            .trim();
+
+    const amount =
+        Number(
+            document
+                .getElementById("addAmount")
+                .value
+        );
+
+    const status =
+        document.getElementById(
+            "addMoneyStatus"
+        );
+
+    const button =
+        document.getElementById(
+            "addMoneyBtn"
+        );
+
+    status.textContent = "";
+
+    if(!/^[0-9]{10}$/.test(mobile)){
+
+        status.textContent =
+            "Enter a valid 10 digit mobile number.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    if(
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ){
+
+        status.textContent =
+            "Enter a valid amount.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    button.disabled = true;
+
+    button.textContent =
+        "Adding...";
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/demo/add-balance",
+                {
+                    method:"POST",
+
+                    headers:
+                        authHeaders(),
+
+                    body:
+                        JSON.stringify({
+                            mobile:mobile,
+                            amount:amount
+                        })
+                }
+            );
+
+            const contentType =
+    response.headers.get("content-type") || "";
+
+if (!contentType.includes("application/json")) {
+
+    const text =
+        await response.text();
+
+    throw new Error(
+        "Server returned HTML instead of JSON. Status: " +
+        response.status +
+        "\n" +
+        text.substring(0, 200)
+    );
+
+}
+
+        const data =
+            await response.json();
+
+        if(response.status === 401){
+
+            logoutLocal();
+            return;
+
+        }
+
+        if(!response.ok){
+
+            status.textContent =
+                data.message ||
+                "Could not add money.";
+
+            status.className =
+                "status error";
+
+            return;
+        }
+
+        status.textContent =
+            "Money added successfully. New balance: ₹" +
+            Number(data.balance).toFixed(2);
+
+        status.className =
+            "status success";
+
+        document.getElementById(
+            "addAmount"
+        ).value = "";
+
+        await loadUsers();
+
+        await loadAllTransactions();
+
+    }catch(error){
+
+        console.error(error);
+
+        status.textContent =
+            "Server connection failed.";
+
+        status.className =
+            "status error";
+
+    }finally{
+
+        button.disabled = false;
+
+        button.textContent =
+            "Add Money";
+
+    }
+
+}
+
+
+/* =========================
+   WITHDRAWAL REQUESTS
+========================= */
+
+async function loadWithdrawals(){
+
+    const table =
+        document.getElementById(
+            "withdrawalsTable"
+        );
+
+    const status =
+        document.getElementById(
+            "withdrawalStatus"
+        );
+
+    table.innerHTML = `
+        <tr>
+            <td colspan="8">
+                Loading...
+            </td>
+        </tr>
+    `;
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/admin/withdrawals",
+                {
+                    headers:
+                        authHeaders()
+                }
+            );
+
+        if(response.status === 401){
+
+            logoutLocal();
+            return;
+
+        }
+
+        const data =
+            await response.json();
+
+        if(!response.ok){
+
+            throw new Error(
+                data.message ||
+                "Failed to load withdrawal requests."
+            );
+
+        }
+
+        const requests =
+            Array.isArray(data)
+                ? data
+                : data.withdrawals;
+
+        table.innerHTML = "";
+
+        if(
+            !Array.isArray(requests) ||
+            requests.length === 0
+        ){
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="8" class="empty">
+                        No withdrawal requests found.
+                    </td>
+                </tr>
+            `;
+
+            status.textContent =
+                "No withdrawal requests.";
+
+            status.className =
+                "status";
+
+            return;
+
+        }
+
+        requests.forEach(function(item){
+
+            const row =
+                document.createElement("tr");
+
+            const statusText =
+                String(
+                    item.status || "Pending"
+                );
+
+            const statusClass =
+                statusText.toLowerCase();
+
+            let actionHtml = "";
+
+            if(
+                statusText.toLowerCase() ===
+                "pending"
+            ){
+
+                actionHtml = `
+                    <div class="action-box">
+
+                        <button
+                            class="success-btn"
+                            onclick="updateWithdrawal(
+                                ${Number(item.id)},
+                                'Approved'
+                            )"
+                        >
+                            Approve
+                        </button>
+
+                        <button
+                            class="danger"
+                            onclick="updateWithdrawal(
+                                ${Number(item.id)},
+                                'Rejected'
+                            )"
+                        >
+                            Reject
+                        </button>
+
+                    </div>
+                `;
+
+            }else{
+
+                actionHtml =
+                    "Completed";
+
+            }
+
+            row.innerHTML = `
+
+                <td>
+                    ${escapeHtml(item.id)}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        item.name || ""
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        item.mobile || ""
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        item.upi_id || ""
+                    )}
+                </td>
+
+                <td>
+                    ₹${Number(
+                        item.amount || 0
+                    ).toFixed(2)}
+                </td>
+
+                <td>
+                    <span
+                        class="badge ${escapeHtml(
+                            statusClass
+                        )}"
+                    >
+                        ${escapeHtml(
+                            statusText
+                        )}
+                    </span>
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        item.created_at || ""
+                    )}
+                </td>
+
+                <td>
+                    ${actionHtml}
+                </td>
+            `;
+
+            table.appendChild(row);
+
+        });
+
+        status.textContent =
+            "Withdrawal requests loaded.";
+
+        status.className =
+            "status success";
+
+    }catch(error){
+
+        console.error(error);
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="8">
+                    Failed to load withdrawal requests.
+                </td>
+            </tr>
+        `;
+
+        status.textContent =
+            error.message ||
+            "Failed to load withdrawal requests.";
+
+        status.className =
+            "status error";
+
+    }
+
+}
+
+
+/* =========================
+   APPROVE / REJECT
+========================= */
+
+async function updateWithdrawal(
+    requestId,
+    newStatus
+){
+
+    if(!requestId){
+        return;
+    }
+
+    const confirmText =
+        newStatus === "Approved"
+            ? "Approve this demo withdrawal request?"
+            : "Reject this demo withdrawal request?";
+
+    if(!confirm(confirmText)){
+        return;
+    }
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/admin/withdrawals/" +
+                encodeURIComponent(requestId),
+                {
+                    method:"POST",
+
+                    headers:
+                        authHeaders(),
+
+                    body:
+                        JSON.stringify({
+                            status:
+                                newStatus
+                        })
+                }
+            );
+
+        if(response.status === 401){
+
+            logoutLocal();
+            return;
+
+        }
+
+        const data =
+            await response.json();
+
+        if(!response.ok){
+
+            alert(
+                data.message ||
+                "Could not update request."
+            );
+
+            return;
+
+        }
+
+        alert(
+            "Request " +
+            newStatus.toLowerCase() +
+            " successfully."
+        );
+
+        await loadWithdrawals();
+
+        await loadUsers();
+
+        await loadAllTransactions();
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Server connection failed."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   TRANSACTIONS
+========================= */
+
+async function loadAllTransactions(){
+
+    const table =
+        document.getElementById(
+            "transactionsTable"
+        );
+
+    const status =
+        document.getElementById(
+            "transactionStatus"
+        );
+
+    table.innerHTML = `
+        <tr>
+            <td colspan="5">
+                Loading...
+            </td>
+        </tr>
+    `;
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/users",
+                {
+                    headers:
+                        authHeaders()
+                }
+            );
+
+        if(response.status === 401){
+
+            logoutLocal();
+            return;
+
+        }
+
+        const users =
+            await response.json();
+
+        if(!response.ok){
+
+            throw new Error(
+                users.message ||
+                "Could not load users."
+            );
+
+        }
+
+        table.innerHTML = "";
+
+        let found = false;
+
+        for(const user of users){
+
+            const txResponse =
+                await fetch(
+                    "/api/transactions/" +
+                    encodeURIComponent(
+                        user.mobile
+                    )
+                );
+
+            if(!txResponse.ok){
+                continue;
+            }
+
+            const data =
+                await txResponse.json();
+
+            if(
+                !data.success ||
+                !Array.isArray(
+                    data.transactions
+                )
+            ){
+                continue;
+            }
+
+            data.transactions.forEach(
+                function(tx){
+
+                    found = true;
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${escapeHtml(tx.id)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(user.id)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(tx.type)}
+                        </td>
+
+                        <td>
+                            ₹${Number(
+                                tx.amount || 0
+                            ).toFixed(2)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                tx.created_at
+                            )}
+                        </td>
+
+                    `;
+
+                    table.appendChild(row);
+
+                }
+            );
+
+        }
+
+        if(!found){
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        No transactions found.
+                    </td>
+                </tr>
+            `;
+
+            status.textContent =
+                "No transactions found.";
+
+            status.className =
+                "status";
+
+        }else{
+
+            status.textContent =
+                "Transactions loaded successfully.";
+
+            status.className =
+                "status success";
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    Failed to load transactions.
+                </td>
+            </tr>
+        `;
+
+        status.textContent =
+            error.message ||
+            "Failed to load transactions.";
+
+        status.className =
+            "status error";
+
+    }
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout(){
+
+    try{
+
+        await fetch(
+            "/api/admin/logout",
+            {
+                method:"POST",
+
+                headers:{
+                    "Authorization":
+                        "Bearer " +
+                        adminToken
+                }
+            }
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+    logoutLocal();
+
+}
+
+
+function logoutLocal(){
+
+    sessionStorage.removeItem(
+        "adminToken"
+    );
+
+    sessionStorage.removeItem(
+        "adminLoggedIn"
+    );
+
+    window.location.href =
+        "/admin-login.html";
+
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+document
+    .getElementById(
+        "addMoneyBtn"
+    )
+    .addEventListener(
+        "click",
+        addMoney
+    );
+
+
+document
+    .getElementById(
+        "refreshBtn"
+    )
+    .addEventListener(
+        "click",
+        loadUsers
+    );
+
+
+document
+    .getElementById(
+        "loadTransactionsBtn"
+    )
+    .addEventListener(
+        "click",
+        loadAllTransactions
+    );
+
+
+document
+    .getElementById(
+        "refreshWithdrawalsBtn"
+    )
+    .addEventListener(
+        "click",
+        loadWithdrawals
+    );
+
+
+document
+    .getElementById(
+        "logoutBtn"
+    )
+    .addEventListener(
+        "click",
+        logout
+    );
+
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+loadUsers();
+
+loadWithdrawals();
+
+</script>
+
+</body> 
+</html>

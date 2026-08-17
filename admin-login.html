@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Login</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef2ff,
+                    #f8fafc
+                );
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            min-height: 100vh;
+
+            margin: 0;
+
+            padding: 20px;
+
+        }
+
+
+        .box {
+
+            background: white;
+
+            width: 100%;
+
+            max-width: 380px;
+
+            padding: 30px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 10px 35px
+                rgba(15, 23, 42, 0.08);
+
+        }
+
+
+        .icon {
+
+            width: 55px;
+
+            height: 55px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 15px;
+
+            background: #111827;
+
+            color: white;
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        h2 {
+
+            margin: 0;
+
+            font-size: 25px;
+
+            color: #172033;
+
+        }
+
+
+        .subtitle {
+
+            margin: 7px 0 22px;
+
+            color: #7b8494;
+
+            font-size: 13px;
+
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 14px;
+
+            margin-bottom: 12px;
+
+            border:
+                1px solid #dfe3e8;
+
+            border-radius: 11px;
+
+            font-size: 15px;
+
+            outline: none;
+
+        }
+
+
+        input:focus {
+
+            border-color: #111827;
+
+        }
+
+
+        button {
+
+            width: 100%;
+
+            padding: 14px;
+
+            margin-top: 5px;
+
+            border: 0;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+
+            background: #111827;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+        }
+
+
+        button:disabled {
+
+            opacity: .6;
+
+            cursor: not-allowed;
+
+        }
+
+
+        #message {
+
+            margin-top: 14px;
+
+            font-size: 14px;
+
+            min-height: 20px;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="box">
+
+
+    <div class="icon">
+        W
+    </div>
+
+
+    <h2>
+        Admin Login
+    </h2>
+
+
+    <p class="subtitle">
+        Sign in to manage the demo wallet.
+    </p>
+
+
+    <input
+        id="username"
+        type="text"
+        placeholder="Admin username"
+        autocomplete="username"
+    >
+
+
+    <input
+        id="password"
+        type="password"
+        placeholder="Admin password"
+        autocomplete="current-password"
+    >
+
+
+    <button id="loginBtn">
+        Login
+    </button>
+
+
+    <div id="message"></div>
+
+
+</div>
+
+
+
+<script>
+
+
+const loginBtn =
+    document.getElementById(
+        "loginBtn"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+
+loginBtn.addEventListener(
+    "click",
+    async function () {
+
+
+        const username =
+            document
+                .getElementById(
+                    "username"
+                )
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById(
+                    "password"
+                )
+                .value;
+
+
+        message.textContent = "";
+
+
+        if (
+            !username ||
+            !password
+        ) {
+
+            message.textContent =
+                "Enter username and password.";
+
+            return;
+
+        }
+
+
+        loginBtn.disabled =
+            true;
+
+
+        loginBtn.textContent =
+            "Logging in...";
+
+
+        try {
+
+
+            const response =
+                await fetch(
+                    "/api/admin/login",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                username:
+                                    username,
+
+                                password:
+                                    password
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                message.textContent =
+                    data.message ||
+                    "Login failed.";
+
+                return;
+
+            }
+
+
+            // Save admin login state
+
+            sessionStorage.setItem(
+                "adminLoggedIn",
+                "true"
+            );
+
+
+            // Save server-issued admin token
+
+            sessionStorage.setItem(
+                "adminToken",
+                data.token
+            );
+
+
+            // Open admin panel
+
+            window.location.href =
+                "/admin.html";
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            message.textContent =
+                "Server connection failed.";
+
+        } finally {
+
+            loginBtn.disabled =
+                false;
+
+            loginBtn.textContent =
+                "Login";
+
+        }
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>

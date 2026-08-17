@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Wallet</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #111827;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            border: 0;
+        }
+
+        input {
+            width: 100%;
+            min-height: 52px;
+            padding: 14px 16px;
+            margin-top: 12px;
+            border: 1px solid #dbe2ea;
+            border-radius: 14px;
+            background: #fff;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
+        }
+
+        /* AUTH */
+
+        .auth-container {
+            width: 100%;
+            max-width: 480px;
+            margin: auto;
+            padding: 30px 16px 40px;
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .brand-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 22px;
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            font-size: 30px;
+            font-weight: 800;
+            box-shadow: 0 12px 30px rgba(37, 99, 235, .25);
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .brand p {
+            margin: 8px 0 0;
+            color: #6b7280;
+        }
+
+        .auth-card {
+            background: #fff;
+            padding: 24px 18px;
+            border-radius: 22px;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, .08);
+            margin-bottom: 18px;
+        }
+
+        .auth-card h2 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin: 8px 0 18px;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            width: 100%;
+            min-height: 54px;
+            margin-top: 14px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .primary-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .secondary-btn {
+            background: #eef2ff;
+            color: #1d4ed8;
+        }
+
+        .link-btn {
+            display: block;
+            margin: 15px auto 0;
+            background: transparent;
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 22px 0 4px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: #e5e7eb;
+        }
+
+        #message,
+        #loginMessage,
+        #forgotMessage,
+        #withdrawMessage,
+        #telegramMessage {
+            min-height: 20px;
+            font-size: 14px;
+        }
+
+        /* WALLET */
+
+        .wallet-container {
+            width: 100%;
+            max-width: 650px;
+            margin: auto;
+            padding: 18px 14px 40px;
+        }
+
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .small-title {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .wallet-header h1 {
+            margin: 5px 0 0;
+            font-size: 26px;
+        }
+
+        .menu-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
+            background: #fff;
+            font-size: 30px;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, .08);
+        }
+
+        /* MENU */
+
+        .menu-panel {
+            background: white;
+            padding: 8px;
+            margin-bottom: 18px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, .10);
+        }
+
+        .menu-panel button {
+            width: 100%;
+            padding: 15px 16px;
+            text-align: left;
+            background: transparent;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .menu-panel button:hover {
+            background: #f1f5f9;
+        }
+
+        #logoutBtn {
+            color: #dc2626;
+        }
+
+        /* BALANCE */
+
+        .balance-card {
+            position: relative;
+            overflow: hidden;
+            padding: 25px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #2563eb, #4338ca);
+            color: white;
+            box-shadow: 0 18px 35px rgba(37, 99, 235, .25);
+        }
+
+        .balance-card::after {
+            content: "";
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            right: -70px;
+            top: -70px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.08);
+        }
+
+        .balance-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .wallet-dot {
+            width: 12px;
+            height: 12px;
+            display: inline-block;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow:
+                0 0 0 5px rgba(34,197,94,.18),
+                0 0 14px rgba(34,197,94,.8);
+        }
+
+        .balance-card h2 {
+            position: relative;
+            z-index: 1;
+            margin: 16px 0 4px;
+            font-size: 38px;
+        }
+
+        .balance-label {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            opacity: .8;
+        }
+
+        /* CARDS */
+
+        .card {
+            background: white;
+            padding: 22px 18px;
+            margin-top: 18px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(15,23,42,.07);
+        }
+
+        .card h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* TRANSACTIONS */
+
+        .dashboard-history {
+            margin-top: 22px;
+        }
+
+        .history-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .history-heading h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .history-heading span {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        #transactions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #transactions > div {
+            background: white;
+            padding: 16px;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(15,23,42,.05);
+        }
+
+        .empty-transaction {
+            text-align: center;
+            padding: 25px 15px !important;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        /* WITHDRAW HISTORY */
+
+        #withdrawalStatusList {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        #withdrawalStatusList > div {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 15px;
+        }
+
+        .demo-note {
+            margin-top: 25px;
+            padding: 13px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* MOBILE */
+
+        @media (max-width:480px) {
+
+            .wallet-container {
+                padding: 14px 12px 35px;
+            }
+
+            .wallet-header h1 {
+                font-size: 23px;
+            }
+
+            .balance-card {
+                padding: 22px 20px;
+                border-radius: 21px;
+            }
+
+            .balance-card h2 {
+                font-size: 34px;
+            }
+
+            .auth-container {
+                padding-top: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     AUTH
+===================================================== -->
+
+<div class="auth-container" id="authBox">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            W
+        </div>
+
+        <h1>
+            My Wallet
+        </h1>
+
+        <p>
+            Simple & secure wallet
+        </p>
+
+    </div>
+
+
+    <!-- LOGIN -->
+
+    <div class="auth-card">
+
+        <h2>
+            Welcome Back
+        </h2>
+
+        <p class="subtitle">
+            Login to your wallet
+        </p>
+
+        <input
+            type="tel"
+            id="loginUsername"
+            placeholder="Mobile number"
+            maxlength="10"
+            inputmode="numeric"
+            autocomplete="tel"
+        >
+
+        <input
+            type="password"
+            id="loginPassword"
+            placeholder="Password"
+            autocomplete="current-password"
+        >
+
+        <button
+            id="loginBtn"
+            class="primary-btn"
+        >
+            Login
+        </button>
+
+        <p id="loginMessage"></p>
+
+        <button
+            id="forgotPasswordBtn"
+            class="link-btn"
+        >
+            Forgot Password?
+        </button>
+
+        <div class="divider">
+            <span>
+                New to My Wallet?
+            </span>
+        </div>
+
+        <button
+            id="showRegisterBtn"
+            class="secondary-btn"
+        >
+            Create Account
+        </button>
+
+    </div>
+
+
+    <!-- REGISTER -->
+
+    <div
+        class="auth-card"
+        id="registerCard"
+        style="display:none;"
+    >
+
+        <h2>
+            Create Account
+        </h2>
+
+        <p class="subtitle">
+            Create your wallet account
+        </p>
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Full name"
+            autocomplete="name"
+        >
+
+        <input
+            type="tel"
+            id="username"
+            placeholder="Mobile number"
+            maxlength="10"
+            inputmode="numeric"
+            autocomplete="tel"
+        >
+
+        <input
+            type="password"
+            id="registerPassword"
+            placeholder="Create password"
+            autocomplete="new-password"
+        >
+
+        <button
+            id="registerBtn"
+            class="primary-btn"
+        >
+            Create Account
+        </button>
+
+        <p id="message"></p>
+
+        <button
+            id="backToLoginBtn"
+            class="link-btn"
+        >
+            Back to Login
+        </button>
+
+    </div>
+
+
+    <!-- FORGOT PASSWORD -->
+
+    <div
+        class="auth-card"
+        id="forgotCard"
+        style="display:none;"
+    >
+
+        <h2>
+            Forgot Password
+        </h2>
+
+        <p class="subtitle">
+            Reset your password
+        </p>
+
+        <input
+            type="tel"
+            id="forgotMobile"
+            placeholder="Mobile number"
+            maxlength="10"
+            inputmode="numeric"
+        >
+
+        <button
+            id="sendOtpBtn"
+            class="secondary-btn"
+        >
+            Send OTP
+        </button>
+
+        <input
+            type="text"
+            id="forgotOtp"
+            placeholder="Enter OTP"
+            maxlength="6"
+            inputmode="numeric"
+            style="display:none;"
+        >
+
+        <input
+            type="password"
+            id="newPassword"
+            placeholder="New password"
+            style="display:none;"
+        >
+
+        <button
+            id="resetPasswordBtn"
+            class="primary-btn"
+            style="display:none;"
+        >
+            Reset Password
+        </button>
+
+        <p id="forgotMessage"></p>
+
+        <button
+            id="forgotBackBtn"
+            class="link-btn"
+        >
+            Back to Login
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     WALLET
+===================================================== -->
+
+<div
+    class="wallet-container"
+    id="walletBox"
+    style="display:none;"
+>
+
+    <!-- HEADER -->
+
+    <div class="wallet-header">
+
+        <div>
+
+            <div class="small-title">
+                MY WALLET
+            </div>
+
+            <h1>
+                Hello,
+                <span id="userName"></span>
+            </h1>
+
+        </div>
+
+        <button
+            id="menuBtn"
+            class="menu-btn"
+            aria-label="Menu"
+        >
+            ⋮
+        </button>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <div
+        id="menuPanel"
+        class="menu-panel"
+        style="display:none;"
+    >
+
+        <button data-section="dashboard">
+            🏠 Dashboard
+        </button>
+
+        <button data-section="withdraw">
+            💸 Withdrawal
+        </button>
+
+        <button data-section="withdrawHistory">
+            📋 Withdrawal History
+        </button>
+
+        <button data-section="telegram">
+            🔔 Telegram Settings
+        </button>
+
+        <button id="logoutBtn">
+            🚪 Logout
+        </button>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboardSection">
+
+        <div class="balance-card">
+
+            <div class="balance-top">
+
+                <span>
+                    Available Balance
+                </span>
+
+                <span
+                    class="wallet-dot"
+                    title="Wallet active"
+                ></span>
+
+            </div>
+
+            <h2 id="balance">
+                ₹0.00
+            </h2>
+
+            <p class="balance-label">
+                Wallet balance
+            </p>
+
+        </div>
+
+
+        <!-- TRANSACTION HISTORY -->
+
+        <div class="dashboard-history">
+
+            <div class="history-heading">
+
+                <h2>
+                    Transaction History
+                </h2>
+
+                <span>
+                    Recent activity
+                </span>
+
+            </div>
+
+            <div id="transactions">
+
+                <div class="empty-transaction">
+
+                    <div class="empty-icon">
+                        ↕
+                    </div>
+
+                    <strong>
+                        No transactions yet
+                    </strong>
+
+                    <br>
+
+                    <span>
+                        Your wallet activity will appear here.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- WITHDRAW -->
+
+    <section
+        id="withdrawSection"
+        style="display:none;"
+    >
+
+        <div class="card">
+
+            <h2>
+                Withdraw Money
+            </h2>
+
+            <p>
+                Enter your UPI ID and withdrawal amount.
+            </p>
+
+            <input
+                type="text"
+                id="withdrawUpiId"
+                placeholder="Enter UPI ID"
+                autocomplete="off"
+            >
+
+            <input
+                type="number"
+                id="withdrawAmount"
+                placeholder="Enter amount"
+                min="1"
+                step="0.01"
+                inputmode="decimal"
+            >
+
+            <button
+                id="withdrawBtn"
+                class="primary-btn"
+            >
+                Withdraw
+            </button>
+
+            <p id="withdrawMessage"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- WITHDRAWAL HISTORY -->
+
+    <section
+        id="withdrawHistorySection"
+        style="display:none;"
+    >
+
+        <div class="card">
+
+            <h2>
+                Withdrawal History
+            </h2>
+
+            <p>
+                Check your withdrawal requests.
+            </p>
+
+            <div id="withdrawalStatusList">
+                Loading...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- OLD SCRIPT COMPATIBILITY -->
+
+    <section
+        id="transactionsSection"
+        style="display:none;"
+    >
+
+        <div class="card">
+
+            <h2>
+                Transaction History
+            </h2>
+
+            <div id="transactionsBackup"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TELEGRAM -->
+
+    <section
+        id="telegramSection"
+        style="display:none;"
+    >
+
+        <div class="card">
+
+            <h2>
+                🔔 Telegram Settings
+            </h2>
+
+            <p>
+                Connect Telegram to receive wallet notifications.
+            </p>
+
+
+            <!-- OPEN BOT -->
+
+            <button
+                id="openTelegramBotBtn"
+                class="primary-btn"
+                type="button"
+            >
+                📲 Open Telegram Bot
+            </button>
+            <button
+    id="openChatIdBotBtn"
+    class="secondary-btn"
+    type="button"
+>
+    🆔 Get Telegram Chat ID
+</button>
+
+<p style="
+    margin-top:10px;
+    font-size:13px;
+    color:#64748b;
+    line-height:1.5;
+">
+    Open the Chat ID bot, press Start,
+    then copy your Chat ID and paste it above.
+</p>
+
+
+            <p
+                style="
+                    margin-top:12px;
+                    font-size:13px;
+                    line-height:1.6;
+                    color:#64748b;
+                "
+            >
+                <b>Step 1:</b> Open Telegram Bot<br>
+                <b>Step 2:</b> Press Start<br>
+                <b>Step 3:</b> Copy your Chat ID<br>
+                <b>Step 4:</b> Paste it below
+            </p>
+
+
+            <input
+                type="text"
+                id="telegramChatId"
+                placeholder="Enter Telegram Chat ID"
+                inputmode="numeric"
+                autocomplete="off"
+            >
+
+
+            <button
+                id="saveTelegramBtn"
+                class="primary-btn"
+                type="button"
+            >
+                🔗 Connect Telegram
+            </button>
+
+
+            <p id="telegramMessage"></p>
+
+        </div>
+
+    </section>
+
+
+    <div class="demo-note">
+        HI WELCOME TO YOUR WALLET
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TELEGRAM BOT BUTTON
+===================================================== -->
+
+<script>
+
+    const TELEGRAM_BOT_USERNAME =
+        "MyWallet_NotifyBot";
+
+
+    const openTelegramBotBtn =
+        document.getElementById(
+            "openTelegramBotBtn"
+        );
+
+
+    if (openTelegramBotBtn) {
+
+        openTelegramBotBtn.addEventListener(
+            "click",
+            function () {
+
+                const telegramUrl =
+                    "https://t.me/" +
+                    TELEGRAM_BOT_USERNAME;
+
+                window.open(
+                    telegramUrl,
+                    "_blank"
+                );
+
+            }
+        );
+
+    }
+
+</script>
+
+
+<!-- EXISTING FUNCTIONALITY -->
+
+<script>
+    const openChatIdBotBtn =
+        document.getElementById("openChatIdBotBtn");
+
+    if (openChatIdBotBtn) {
+        openChatIdBotBtn.addEventListener("click", function () {
+            window.open(
+                "https://t.me/chatIDrobot",
+                "_blank"
+            );
+        });
+    }
+</script>
+
+<script>
+document.querySelectorAll("input").forEach((input, index, inputs) => {
+    input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+
+            // পরের visible input খুঁজবে
+            for (let i = index + 1; i < inputs.length; i++) {
+                if (inputs[i].offsetParent !== null) {
+                    inputs[i].focus();
+                    return;
+                }
+            }
+
+            // পরের input না থাকলে form-এর প্রথম button চাপবে
+            const card = input.closest(".auth-card");
+            if (card) {
+                const button = card.querySelector(
+                    "button:not([style*='display:none'])"
+                );
+
+                if (button) {
+                    button.click();
+                }
+            }
+        }
+    });
+});
+</script>
+
+<script src="script.js"></script>
+
+
+</body>
+</html>
