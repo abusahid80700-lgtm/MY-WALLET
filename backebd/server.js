@@ -70,8 +70,8 @@ async function sendTelegramMessage(chatId, text) {
    ADMIN
 ===================================================== */
 
-const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "admin123";
+const ADMIN_USERNAME = "ABU SAHID 807";
+const ADMIN_PASSWORD = "SAHID 807";
 
 const adminTokens = new Set();
 
